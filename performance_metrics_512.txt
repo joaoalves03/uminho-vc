@@ -1,0 +1,15 @@
+Performance Metrics
+===================
+Configuration:
+  Nodes:            4
+  Tasks:            512
+  Tasks per node:   128
+
+Execution Time:
+  snappyHexMesh:    110 s
+  Solver:           57 s
+  Total:            167 s
+
+Job Info:
+  Job ID:           912609
+  Date:             Sun  1 Feb 21:40:40 WET 2026
