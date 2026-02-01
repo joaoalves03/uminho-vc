@@ -6,4 +6,4 @@ The siumulation has already been ran, but the repository also contains scripts t
 
 To open in ParaView, load the state file **apollo.foam**
 
-https://github.com/user-attachments/assets/3e9f0211-7561-4625-b923-4cd107eebe28
+https://github.com/user-attachments/assets/73e6cbfc-46ce-4d12-95dc-3f1eba7235b5
