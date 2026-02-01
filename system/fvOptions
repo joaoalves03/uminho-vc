@@ -1,0 +1,27 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+limitTemperature
+{
+    type            limitTemperature;
+    active          yes;
+
+    // Apply to the whole domain
+    selectionMode   all;
+
+    // The clamps
+    min             50;    // Never let T drop below 50 K
+    max             10000; // Never let T go above 10,000 K
+}
+
+// ************************************************************************* //

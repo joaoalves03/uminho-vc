@@ -1,0 +1,7 @@
+log.*
+slurm-*.out
+processor*
+dynamicCode/
+.DS_Store
+__pycache__/
+

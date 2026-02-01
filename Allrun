@@ -1,0 +1,59 @@
+#!/bin/bash
+cd "${0%/*}" || exit                         # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions # Tutorial run functions
+
+decompDict="-decomposeParDict system/decomposeParDict.256"
+
+# -----------------------------------------------------------------------------
+# 1. PREPARE GEOMETRY
+# -----------------------------------------------------------------------------
+mkdir -p constant/triSurface
+cp -f ./capsule_model/APOLLO_capsule.obj constant/triSurface/
+
+# Scale and move geometry
+surfaceTransformPoints -scale "(0.001 0.001 0.001)" constant/triSurface/APOLLO_capsule.obj constant/triSurface/APOLLO_capsule.obj
+surfaceTransformPoints -translate "(0 0 4)" constant/triSurface/APOLLO_capsule.obj constant/triSurface/APOLLO_capsule.obj
+
+runApplication surfaceFeatureExtract
+runApplication blockMesh
+
+# -----------------------------------------------------------------------------
+# 2. MESH GENERATION
+# -----------------------------------------------------------------------------
+runApplication $decompDict decomposePar
+runParallel $decompDict snappyHexMesh -overwrite
+
+# -----------------------------------------------------------------------------
+# 3. RESET & PREPARE FIELDS
+# -----------------------------------------------------------------------------
+# Reconstruct mesh to single domain
+runApplication reconstructParMesh -constant
+
+# CLEANUP: Remove old processor folders and logs to force a fresh start
+rm -rf processor*
+rm -f log.decomposePar
+
+# Restore initial fields
+restore0Dir
+
+# Decompose mesh AND fields (creates correct processor folders)
+runApplication $decompDict decomposePar
+
+# -----------------------------------------------------------------------------
+# 4. RUN SIMULATION
+# -----------------------------------------------------------------------------
+runParallel $decompDict checkMesh -writeFields '(nonOrthoAngle)' -constant
+
+# REMOVED potentialFoam to prevent dimension mismatch
+# runParallel $decompDict potentialFoam -writephi
+
+# Run main solver
+runParallel $decompDict $(getApplication)
+
+# -----------------------------------------------------------------------------
+# 5. POST-PROCESSING
+# -----------------------------------------------------------------------------
+runApplication reconstructParMesh -constant
+runApplication reconstructPar
+
+#------------------------------------------------------------------------------
