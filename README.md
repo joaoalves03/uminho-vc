@@ -5,3 +5,5 @@ To clone the repository, [Git LFS](https://git-lfs.com/) is needed
 The siumulation has already been ran, but the repository also contains scripts to run the simulation in the [Deucalion Supercomputer](https://docs.macc.fccn.pt/)
 
 To open in ParaView, load the state file **apollo.foam**
+
+https://github.com/user-attachments/assets/3e9f0211-7561-4625-b923-4cd107eebe28
